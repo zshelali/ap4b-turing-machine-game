@@ -3,7 +3,7 @@ public class Administrateur {
 
     private CodeSalle proposition;
 
-    private Interface interface;
+    private Interface game_interface;
 
     public int getInteractions() {
         return 0;
