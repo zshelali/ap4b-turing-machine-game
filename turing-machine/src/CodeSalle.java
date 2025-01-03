@@ -7,6 +7,18 @@ public class CodeSalle {
 
 	// Constructeur
 	public CodeSalle(char campus, char batiment, int etage, int numero) {
+		if (campus != 'B' && campus != 'S' && campus != 'M') {
+            throw new IllegalArgumentException("Invalid campus. Must be 'B', 'S', or 'M'.");
+        }
+        if (batiment < 'A' || batiment > 'E') {
+            throw new IllegalArgumentException("Invalid batiment. Must be between 'A' and 'E'.");
+        }
+        if (etage < 0 || etage > 4) {
+            throw new IllegalArgumentException("Invalid etage. Must be between 0 and 4.");
+        }
+        if (numero < 0 || numero > 9) {
+            throw new IllegalArgumentException("Invalid numero. Must be between 0 and 9.");
+        }
 		this.campus = campus;
 		this.batiment = batiment;
 		this.etage = etage;
