@@ -3,7 +3,7 @@ public class CodeSalle {
 	private char campus; // B, S, M
 	private char batiment; // A, B, C, D, E
 	private int etage; // 0, 1, 2, 3, 4
-	private int numer; // 0 à 9
+	private int numero; // 0 à 9
 
 	// Constructeur
 	public CodeSalle(char campus, char batiment, int etage, int numero) {
