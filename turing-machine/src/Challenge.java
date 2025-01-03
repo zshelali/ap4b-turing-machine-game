@@ -4,8 +4,6 @@ public class Challenge {
 
 	private Critere listeCriteres;
 
-	private Verificateur[] verificateur;
-
 	private Critere[] critere;
 
 }
