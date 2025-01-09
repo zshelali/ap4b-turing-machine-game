@@ -1,11 +1,22 @@
 public class Administrateur {
-    private int nInteraction;
 
+    private int interactions;
     private CodeSalle proposition;
 
-    private Interface gameInterface;
+    public Administrateur() {
+        this.interactions = 0;
+    }
+
+    public void faireProposition(CodeSalle proposition) {
+        this.proposition = proposition;
+        this.interactions++;
+    }
+
+    public CodeSalle getProposition() {
+        return proposition;
+    }
 
     public int getInteractions() {
-        return 0;
+        return interactions;
     }
 }

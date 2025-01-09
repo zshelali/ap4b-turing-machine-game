@@ -1,13 +1,14 @@
-/* comparaisons sur la parite */
-
 public class CritereParite extends Critere {
+    private boolean pair;
 
-	public void verifEtage() {
+    public CritereParite(String description, boolean pair) {
+        super(description);
+        this.pair = pair;
+    }
 
-	}
-
-	public void verifNum() {
-
-	}
-
+    @Override
+    public boolean verifier(CodeSalle solution, CodeSalle proposition) {
+        int valeur = pair ? proposition.getEtage() : proposition.getNumero();
+        return pair ? (valeur % 2 == 0) : (valeur % 2 != 0);
+    }
 }

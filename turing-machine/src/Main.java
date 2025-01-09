@@ -1,12 +1,18 @@
+import java.util.List;
+
 public class Main {
-    public static void main(String[] args) throws Exception {
-        CodeSalle code1 = new CodeSalle('B', 'A', 2, 1);
-        CodeSalle code2 = new CodeSalle('M', 'C', 4, 9);
-        CodeSalle code3 = new CodeSalle('M', 'E', 0, 4);
+    public static void main(String[] args) {
+        List<Challenge> challenges = ChallengeManager.creerChallenges();
+        // Choisir un challenge (par exemple, le premier)
+        Challenge challenge = challenges.get(0);
 
+        // Exemple de proposition d'un joueur
+        CodeSalle proposition = new CodeSalle('B', 'A', 2, 3);
 
-
-        System.out.println("Hello, World!");
+        // Vérifier les critères du challenge choisi
+        for (Critere critere : challenge.getListeCriteres()) {
+            boolean resultat = challenge.verifierCritere(critere, proposition);
+            System.out.println(critere.getDescription() + " : " + (resultat ? "Validé" : "Non validé"));
+        }
     }
 }
-                      

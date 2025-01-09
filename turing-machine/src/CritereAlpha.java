@@ -1,13 +1,12 @@
-/* criteres par ordre alphabetique */
-
 public class CritereAlpha extends Critere {
 
-	public void verifCamp(CodeSalle c) {
+    public CritereAlpha(String description) {
+        super(description);
+    }
 
-	}
-
-	public void verifBat(CodeSalle c) {
-
-	}
-
+    @Override
+    public boolean verifier(CodeSalle solution, CodeSalle proposition) {
+        // Vérifie si le bâtiment est avant/après le campus par ordre alphabétique
+        return proposition.getBatiment() < solution.getCampus();
+    }
 }
