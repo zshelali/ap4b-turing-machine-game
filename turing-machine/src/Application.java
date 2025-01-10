@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Main {
+public class Application {
     public static void main(String[] args) {
         List<Challenge> challenges = ChallengeManager.creerChallenges();
         // Choisir un challenge (par exemple, le premier)
