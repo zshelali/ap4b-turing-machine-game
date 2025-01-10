@@ -12,6 +12,7 @@ public class CritereRang extends Critere {
     public boolean verifier(CodeSalle solution, CodeSalle proposition) {
         int valeur = solution.getEtage(); // Par exemple, comparer l'étage
         return superieur ? (valeur > valeurReference) : (valeur < valeurReference);
+    }
     private int etageMin; // Étage minimum
     private int numMin;   // Numéro de salle minimum
 

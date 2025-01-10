@@ -2,6 +2,10 @@ public abstract class Critere {
 
     protected String description;
 
+    public Critere(){
+        this.description = " ";
+    }
+
     public Critere(String description) {
         this.description = description;
     }

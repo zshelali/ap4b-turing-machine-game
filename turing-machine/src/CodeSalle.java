@@ -24,7 +24,7 @@ public class CodeSalle {
         return etage;
     }
 
-    public int getNumero() {
+    public int getSalle() {
         return numero;
     }
 
