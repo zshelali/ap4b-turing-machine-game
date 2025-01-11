@@ -6,7 +6,7 @@ public class Administrateur {
 
     public Administrateur(int identifiant) {
         this.identifiant = identifiant;
-        this.interactions = 3; // Initialisez le nombre d'interactions par défaut
+        this.interactions = 2; // Initialisez le nombre d'interactions par défaut
     }
 
     public int getIdentifiant() {
@@ -18,7 +18,7 @@ public class Administrateur {
     }
 
     public void resetInteractions() {
-        this.interactions = 3;
+        this.interactions = 2;
     }
 
     public void decremInteractions() {

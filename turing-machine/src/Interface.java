@@ -73,9 +73,9 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
     Button challengeButton2 = new Button("Challenge 2");
     Button challengeButton3 = new Button("Challenge 3");
 
-    challengeButton1.setOnAction(e -> afficherPage1(administrateurs));
-    challengeButton2.setOnAction(e -> afficherPage2(administrateurs));
-    challengeButton3.setOnAction(e -> afficherPage3(administrateurs));
+    challengeButton1.setOnAction(e -> afficherPage(administrateurs, 1));
+    challengeButton2.setOnAction(e -> afficherPage(administrateurs, 2));
+    challengeButton3.setOnAction(e -> afficherPage(administrateurs, 3));
 
     outputArea = new TextArea();
     outputArea.setEditable(false);
@@ -90,13 +90,32 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
     /*
      * chaque page est un challenge.
      */
-    private void afficherPage1(List<Administrateur> administrateurs) {
+    private void afficherPage(List<Administrateur> administrateurs, int challengeID) {
         // Vérifier qu'il y a au moins un administrateur
         if (administrateurs.isEmpty()) {
             afficherMessage("Aucun administrateur disponible !");
             return;
         }
         Administrateur admin = administrateurs.get(0);
+
+        VBox criteresLayout = new VBox(10);
+        criteresLayout.setVisible(false);
+
+        switch (challengeID){
+            case 1:
+                Challenge.creerChallenge1();
+                break;
+            case 2:
+                Challenge.creerChallenge2();
+                break;
+            case 3:
+                Challenge.creerChallenge3();
+            default :
+                System.out.println("HELP");
+            break;
+        }
+
+       
     
         // Label pour afficher les interactions restantes
         Label interactionsLabel = new Label("Interactions restantes : " + admin.getInteractions());
@@ -143,8 +162,8 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
             batimentComboBox.getValue() != null &&
             etageComboBox.getValue() != null &&
             numeroComboBox.getValue() != null) {
+
                 boolean critereValide = false;
-            
                 if(critereValide){
                     //CHANGER URGENT MODIFIER
                      resultLabel.setText("critere valide (a modifier)");
@@ -188,103 +207,16 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
                                        etageLabel, etageComboBox,
                                        numeroLabel, numeroComboBox, validateButton, resultLabel);
     
-        VBox layout = new VBox(15, new Label("Challenge 1"), interactionsLabel, choicesLayout, boutonRetour);
+        VBox layout = new VBox(15, new Label("Challenge "+challengeID), interactionsLabel, choicesLayout, boutonRetour);
         layout.setStyle("-fx-padding: 20px; -fx-alignment: center;");
     
         // Créer et appliquer la scène
-        Scene scene = new Scene(layout, 500, 400);
+        Scene scene = new Scene(layout, 1024, 728);
         stage.setScene(scene);
     }
     
     ///////////////////////////////////////////////////////////////////////
-    private void afficherPage2(List<Administrateur> administrateurs) {
-        // Select the first admin as an example
-        if (administrateurs.isEmpty()) {
-            afficherMessage("Aucun administrateur disponible !");
-            return;
-        }
-        Administrateur admin = administrateurs.get(0);
     
-        // Layout for displaying criteria
-        VBox criteresLayout = new VBox(10);
-        criteresLayout.setVisible(false); // Hide criteria by default
-    
-        // Display criteria descriptions
-        Challenge challenge2 = Challenge.creerChallenge2();
-        for (Critere critere : challenge2.getListeCriteres()) {
-            Label critereLabel = new Label(critere.getDescription());
-            criteresLayout.getChildren().add(critereLabel);
-        }
-    
-        // Button to toggle criteria visibility
-        Button toggleCriteresButton = new Button("Afficher les critères");
-        toggleCriteresButton.setOnAction(e -> {
-            if (admin.peutInteragir()) {
-                admin.decremInteractions();
-                criteresLayout.setVisible(!criteresLayout.isVisible());
-                toggleCriteresButton.setText(criteresLayout.isVisible() ? "Masquer les critères" : "Afficher les critères");
-            } else {
-                afficherMessage("Aucune interaction restante pour cet administrateur !");
-            }
-        });
-    
-        // Button to return to the main menu
-        Button boutonRetour = new Button("Retour au Menu Principal");
-        boutonRetour.setOnAction(e -> afficherMenuPrincipal(administrateurs));
-    
-        // Main layout
-        VBox layout = new VBox(10, new Label("Challenge 2"), outputArea, toggleCriteresButton, criteresLayout, boutonRetour);
-        layout.setPadding(new javafx.geometry.Insets(10));
-    
-        // Create and set the scene
-        Scene scene = new Scene(layout, 400, 300);
-        stage.setScene(scene);
-    }
-
-      
-    private void afficherPage3(List<Administrateur> administrateurs) {
-        // Select the first admin as an example
-        if (administrateurs.isEmpty()) {
-            afficherMessage("Aucun administrateur disponible !");
-            return;
-        }
-        Administrateur admin = administrateurs.get(0);
-    
-        // Layout for displaying criteria
-        VBox criteresLayout = new VBox(10);
-        criteresLayout.setVisible(false); // Hide criteria by default
-    
-        // Display criteria descriptions
-        Challenge challenge3 = Challenge.creerChallenge3();
-        for (Critere critere : challenge3.getListeCriteres()) {
-            Label critereLabel = new Label(critere.getDescription());
-            criteresLayout.getChildren().add(critereLabel);
-        }
-    
-        // Button to toggle criteria visibility
-        Button toggleCriteresButton = new Button("Afficher les critères");
-        toggleCriteresButton.setOnAction(e -> {
-            if (admin.peutInteragir()) {
-                admin.decremInteractions();
-                criteresLayout.setVisible(!criteresLayout.isVisible());
-                toggleCriteresButton.setText(criteresLayout.isVisible() ? "Masquer les critères" : "Afficher les critères");
-            } else {
-                afficherMessage("Aucune interaction restante pour cet administrateur !");
-            }
-        });
-    
-        // Button to return to the main menu
-        Button boutonRetour = new Button("Retour au Menu Principal");
-        boutonRetour.setOnAction(e -> afficherMenuPrincipal(administrateurs));
-    
-        // Main layout
-        VBox layout = new VBox(10, new Label("Challenge 3"), outputArea, toggleCriteresButton, criteresLayout, boutonRetour);
-        layout.setPadding(new javafx.geometry.Insets(10));
-    
-        // Create and set the scene
-        Scene scene = new Scene(layout, 400, 300);
-        stage.setScene(scene);
-    }
     
 
     // Méthode pour afficher un message
