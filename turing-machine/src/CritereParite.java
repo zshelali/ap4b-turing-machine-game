@@ -1,5 +1,5 @@
 public class CritereParite extends Critere {
-    private boolean pair;
+    private boolean pair; // Si true, vérifier si l'étage est pair, sinon vérifier si le numéro de salle est pair
 
     public CritereParite(String description, boolean pair) {
         super(description);
@@ -8,16 +8,17 @@ public class CritereParite extends Critere {
 
     @Override
     public boolean verifier(CodeSalle solution, CodeSalle proposition) {
-        int valeur = pair ? proposition.getEtage() : proposition.getSalle();
-        return pair ? (valeur % 2 == 0) : (valeur % 2 != 0);
-    }
+        // Si pair est true, on compare l'étage, sinon on compare le numéro de salle
+        int valeurSolution = pair ? solution.getEtage() : solution.getSalle();
+        int valeurProposition = pair ? proposition.getEtage() : proposition.getSalle();
 
-    
-    public boolean verifEtage(CodeSalle codeSalle) {
-        return codeSalle.getEtage() % 2 == 0; // Vérifie si l'étage est pair
-    }
-
-    public boolean verifSalle(CodeSalle codeSalle) {
-        return codeSalle.getSalle() % 2 == 0; // Vérifie si le numéro de salle est pair
+        // Comparaison de la parité des valeurs
+        if (pair) {
+            // Vérifie si l'étage de la proposition a la même parité que l'étage de la solution
+            return (valeurProposition % 2 == 0) == (valeurSolution % 2 == 0); // Compare si les deux ont la même parité
+        } else {
+            // Vérifie si le numéro de la salle de la proposition a la même parité que celui de la solution
+            return (valeurProposition % 2 == 0) == (valeurSolution % 2 == 0); // Compare si les deux ont la même parité
+        }
     }
 }
