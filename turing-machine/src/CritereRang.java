@@ -1,6 +1,6 @@
 public class CritereRang extends Critere {
-    private int valeurReference;
-    private boolean superieur;
+    private int valeurReference; // La valeur de référence pour la comparaison
+    private boolean superieur;   // Si vrai, on vérifie si le numéro de salle est supérieur à la référence
 
     public CritereRang(String description, int valeurReference, boolean superieur) {
         super(description);
@@ -10,22 +10,16 @@ public class CritereRang extends Critere {
 
     @Override
     public boolean verifier(CodeSalle solution, CodeSalle proposition) {
-        int valeur = solution.getEtage(); // Par exemple, comparer l'étage
-        return superieur ? (valeur > valeurReference) : (valeur < valeurReference);
-    }
-    private int etageMin; // Étage minimum
-    private int numMin;   // Numéro de salle minimum
+        // Vérifie si le numéro de salle de la proposition respecte la condition par rapport à la solution
+        int numeroSalleSolution = solution.getSalle();
+        int numeroSalleProposition = proposition.getSalle();
 
-    public CritereRang(int etageMin, int numMin) {
-        this.etageMin = etageMin;
-        this.numMin = numMin;
-    }
-
-    public boolean verifEtage(CodeSalle codeSalle) {
-        return codeSalle.getEtage() > etageMin; // Vérifie si l'étage est supérieur à etageMin
-    }
-
-    public boolean verifSalle(CodeSalle codeSalle) {
-        return codeSalle.getSalle() >= numMin; // Vérifie si le numéro de salle est supérieur ou égal à numMin
+        // Si le critère est "supérieur", on vérifie si le numéro de salle de la proposition est supérieur à la référence
+        // Si le critère est "inférieur", on vérifie si le numéro de salle de la proposition est inférieur à la référence
+        if (superieur) {
+            return numeroSalleProposition > valeurReference;
+        } else {
+            return numeroSalleProposition < valeurReference;
+        }
     }
 }
