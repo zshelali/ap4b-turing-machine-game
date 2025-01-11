@@ -9,13 +9,9 @@ public class GameController {
         this.challenges = challenges;
     }
 
-    public void choisirChallenge(int index) {
-        if (index >= 0 && index < challenges.size()) {
-            currentChallenge = challenges.get(index);
-        }
-    }
-
     public Challenge getCurrentChallenge() {
         return currentChallenge;
     }
+
+
 }

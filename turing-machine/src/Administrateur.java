@@ -2,21 +2,40 @@ public class Administrateur {
 
     private int interactions;
     private CodeSalle proposition;
+    private int identifiant; // Ajoutez un identifiant pour chaque administrateur
 
-    public Administrateur() {
-        this.interactions = 0;
+    public Administrateur(int identifiant) {
+        this.identifiant = identifiant;
+        this.interactions = 3; // Initialisez le nombre d'interactions par défaut
     }
 
-    public void faireProposition(CodeSalle proposition) {
-        this.proposition = proposition;
-        this.interactions++;
+    public int getIdentifiant() {
+        return identifiant;
+    }
+
+    public int getInteractions() {
+        return interactions;
+    }
+
+    public void resetInteractions() {
+        this.interactions = 3;
+    }
+
+    public void decremInteractions() {
+        if (interactions > 0) {
+            this.interactions--;
+        }
+    }
+
+    public boolean peutInteragir() {
+        return interactions > 0;
     }
 
     public CodeSalle getProposition() {
         return proposition;
     }
 
-    public int getInteractions() {
-        return interactions;
+    public void setProposition(CodeSalle proposition) {
+        this.proposition = proposition;
     }
 }

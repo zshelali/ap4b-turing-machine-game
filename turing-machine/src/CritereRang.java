@@ -25,7 +25,7 @@ public class CritereRang extends Critere {
         return codeSalle.getEtage() > etageMin; // Vérifie si l'étage est supérieur à etageMin
     }
 
-    public boolean verifNum(CodeSalle codeSalle) {
+    public boolean verifSalle(CodeSalle codeSalle) {
         return codeSalle.getSalle() >= numMin; // Vérifie si le numéro de salle est supérieur ou égal à numMin
     }
 }
