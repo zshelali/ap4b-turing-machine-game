@@ -88,36 +88,76 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
 }
 
     /*
-     * Pour chaque page, c'est un challenge. On prend
+     * chaque page est un challenge.
      */
     private void afficherPage1(List<Administrateur> administrateurs) {
-        // Choisir le premier administrateur comme exemple
+        // Vérifier qu'il y a au moins un administrateur
         if (administrateurs.isEmpty()) {
             afficherMessage("Aucun administrateur disponible !");
             return;
         }
         Administrateur admin = administrateurs.get(0);
     
-        // Layout pour les critères
-        VBox criteresLayout = new VBox(10);
-        criteresLayout.setVisible(false); // Masquer les critères par défaut
+        // Label pour afficher les interactions restantes
+        Label interactionsLabel = new Label("Interactions restantes : " + admin.getInteractions());
     
-        // Ajouter un exemple de critères
-        Challenge challenge1 = Challenge.creerChallenge1();
-        for (Critere critere : challenge1.getListeCriteres()) {
-            Label critereLabel = new Label(critere.getDescription());
-            criteresLayout.getChildren().add(critereLabel);
-        }
+        // Création des menus déroulants pour le choix de CodeSalle
+        Label campusLabel = new Label("Campus:");
+        ComboBox<String> campusComboBox = new ComboBox<>();
+        campusComboBox.getItems().addAll("B", "S", "M");
     
-        // Bouton pour afficher/masquer les critères
-        Button toggleCriteresButton = new Button("Afficher les critères");
-        toggleCriteresButton.setOnAction(e -> {
-            if (admin.peutInteragir()) {
-                admin.decremInteractions();
-                criteresLayout.setVisible(!criteresLayout.isVisible());
-                toggleCriteresButton.setText(criteresLayout.isVisible() ? "Masquer les critères" : "Afficher les critères");
+        Label batimentLabel = new Label("Bâtiment:");
+        ComboBox<Character> batimentComboBox = new ComboBox<>();
+        batimentComboBox.getItems().addAll('A', 'B', 'C', 'D','E');
+    
+        Label etageLabel = new Label("Étage:");
+        ComboBox<Integer> etageComboBox = new ComboBox<>();
+        etageComboBox.getItems().addAll(0, 1, 2, 3, 4);
+    
+        Label numeroLabel = new Label("Numéro:");
+        ComboBox<Integer> numeroComboBox = new ComboBox<>();
+        numeroComboBox.getItems().addAll(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+    
+        // Bouton pour valider le choix
+        Label resultLabel = new Label(); // Label pour afficher le résultat
+    
+        // Ajouter un listener pour détecter les sélections dans les menus
+        campusComboBox.setOnAction(e -> {
+            resultLabel.setText("Campus sélectionné : " + campusComboBox.getValue());
+        });
+        batimentComboBox.setOnAction(e -> {
+            resultLabel.setText("Bâtiment sélectionné : " + batimentComboBox.getValue());
+        });
+        etageComboBox.setOnAction(e -> {
+            resultLabel.setText("Étage sélectionné : " + etageComboBox.getValue());
+        });
+        numeroComboBox.setOnAction(e -> {
+            resultLabel.setText("Numéro sélectionné : " + numeroComboBox.getValue());
+        });
+    
+        // Finaliser la validation lorsque tout est sélectionné
+        Button validateButton = new Button("Valider");
+        validateButton.setOnAction(e -> {
+            if (campusComboBox.getValue() != null &&
+                batimentComboBox.getValue() != null &&
+                etageComboBox.getValue() != null &&
+                numeroComboBox.getValue() != null) {
+    
+                if (admin.peutInteragir()) {
+                    // Réduire les interactions de l'administrateur
+                    admin.decremInteractions();
+                    interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+    
+                    // Afficher le résultat final
+                    resultLabel.setText("Code sélectionné : " + campusComboBox.getValue() + "-" +
+                                        batimentComboBox.getValue() + "-" +
+                                        etageComboBox.getValue() + "-" +
+                                        numeroComboBox.getValue());
+                } else {
+                    resultLabel.setText("Aucune interaction restante pour cet administrateur !");
+                }
             } else {
-                afficherMessage("Aucune interaction restante pour cet administrateur !");
+                resultLabel.setText("Veuillez sélectionner toutes les options.");
             }
         });
     
@@ -138,21 +178,28 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
             if (result.isPresent() && result.get() == buttonOui) {
                 // Réinitialiser les interactions de l'administrateur
                 admin.resetInteractions();
+                interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
     
                 // Retourner au menu principal
                 afficherMenuPrincipal(administrateurs);
             }
         });
     
-        // Layout principal pour la page
-        VBox layout = new VBox(10, new Label("Challenge 1"), outputArea, toggleCriteresButton, criteresLayout, boutonRetour);
-        layout.setPadding(new javafx.geometry.Insets(10));
+        // Organiser les éléments dans un layout
+        VBox choicesLayout = new VBox(10, campusLabel, campusComboBox,
+                                       batimentLabel, batimentComboBox,
+                                       etageLabel, etageComboBox,
+                                       numeroLabel, numeroComboBox, validateButton, resultLabel);
+    
+        VBox layout = new VBox(15, new Label("Challenge 1"), interactionsLabel, choicesLayout, boutonRetour);
+        layout.setStyle("-fx-padding: 20px; -fx-alignment: center;");
     
         // Créer et appliquer la scène
-        Scene scene = new Scene(layout, 400, 300);
+        Scene scene = new Scene(layout, 500, 400);
         stage.setScene(scene);
     }
     
+    ///////////////////////////////////////////////////////////////////////
     private void afficherPage2(List<Administrateur> administrateurs) {
         // Select the first admin as an example
         if (administrateurs.isEmpty()) {
