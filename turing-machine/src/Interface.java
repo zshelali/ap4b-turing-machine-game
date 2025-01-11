@@ -175,7 +175,24 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
                      resultLabel.setText("VICTOIRE");
                 }
                 else {
-                    resultLabel.setText("Dommage, le code est faux");;
+                    resultLabel.setText("Dommage, le code est faux");
+                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmation.setTitle("Défaite");
+                    confirmation.setHeaderText("Vous avez perdu");
+                    confirmation.setContentText("Cliquez sur OK pour retourner au menu principal");
+    
+                    ButtonType buttonOui = new ButtonType("OK");
+                    confirmation.getButtonTypes().setAll(buttonOui);
+    
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if (result.isPresent() && result.get() == buttonOui) {
+                // Réinitialiser les interactions de l'administrateur
+                admin.resetInteractions();
+                interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+    
+                // Retourner au menu principal
+                afficherMenuPrincipal(administrateurs);
+                }
                 }
             
             }
