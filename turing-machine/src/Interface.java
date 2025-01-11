@@ -38,34 +38,30 @@ private List<Administrateur> creerAdministrateursAvecDialogue() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Ajouter un administrateur");
         alert.setHeaderText("Voulez-vous ajouter un nouvel administrateur ?");
-        alert.setContentText("Cliquez sur Oui pour ajouter, Non pour continuer sans ajouter, ou Quitter pour fermer l'application.");
+        alert.setContentText("Cliquez sur Oui pour ajouter, ou sur Non pour passer au menu principal.");
 
         ButtonType buttonOui = new ButtonType("Oui");
         ButtonType buttonNon = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
-        ButtonType buttonQuitter = new ButtonType("Quitter", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-        alert.getButtonTypes().setAll(buttonOui, buttonNon, buttonQuitter);
+        alert.getButtonTypes().setAll(buttonOui, buttonNon);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent()) {
-            if (result.get() == buttonOui) {
-                // Créer un nouvel administrateur avec l'ID actuel
-                Administrateur admin = new Administrateur(id++);
-                administrateurs.add(admin);
-                afficherMessage("Administrateur avec ID " + (id - 1) + " ajouté !");
-            } else if (result.get() == buttonNon) {
-                // Si aucun administrateur n'a encore été créé, empêcher de continuer sans un minimum
-                if (administrateurs.isEmpty()) {
-                    afficherMessage("Vous devez ajouter au moins un administrateur !");
-                } else {
-                    continuer = false; // Sortir de la boucle
-                }
-            } else if (result.get() == buttonQuitter) {
-                // Quitter l'application
-                Platform.exit();
-                return administrateurs; // En cas de fermeture, retourner la liste actuelle (même si vide)
-            }
+        if (result.isPresent() && result.get() == buttonOui) {
+            // Créer un nouvel administrateur avec l'ID actuel
+            Administrateur admin = new Administrateur(id++);
+            administrateurs.add(admin);
+            afficherMessage("Administrateur avec ID " + (id - 1) + " ajouté !");
+        } else {
+            // L'utilisateur a choisi "Non", sortir de la boucle
+            continuer = false;
         }
+    }
+
+    // Si aucun administrateur n'a été ajouté, en créer un par défaut
+    if (administrateurs.isEmpty()) {
+        Administrateur defaultAdmin = new Administrateur(id);
+        administrateurs.add(defaultAdmin);
+        afficherMessage("Administrateur par défaut avec ID " + id + " créé.");
     }
 
     afficherMessage("Nombre total d'administrateurs créés : " + administrateurs.size());
@@ -95,25 +91,25 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
      * Pour chaque page, c'est un challenge. On prend
      */
     private void afficherPage1(List<Administrateur> administrateurs) {
-        // Select the first admin as an example
+        // Choisir le premier administrateur comme exemple
         if (administrateurs.isEmpty()) {
             afficherMessage("Aucun administrateur disponible !");
             return;
         }
         Administrateur admin = administrateurs.get(0);
     
-        // Layout for displaying criteria
+        // Layout pour les critères
         VBox criteresLayout = new VBox(10);
-        criteresLayout.setVisible(false); // Hide criteria by default
+        criteresLayout.setVisible(false); // Masquer les critères par défaut
     
-        // Display criteria descriptions
+        // Ajouter un exemple de critères
         Challenge challenge1 = Challenge.creerChallenge1();
         for (Critere critere : challenge1.getListeCriteres()) {
             Label critereLabel = new Label(critere.getDescription());
             criteresLayout.getChildren().add(critereLabel);
         }
     
-        // Button to toggle criteria visibility
+        // Bouton pour afficher/masquer les critères
         Button toggleCriteresButton = new Button("Afficher les critères");
         toggleCriteresButton.setOnAction(e -> {
             if (admin.peutInteragir()) {
@@ -125,15 +121,34 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
             }
         });
     
-        // Button to return to the main menu
+        // Bouton pour revenir au menu principal avec confirmation
         Button boutonRetour = new Button("Retour au Menu Principal");
-        boutonRetour.setOnAction(e -> afficherMenuPrincipal(administrateurs));
+        boutonRetour.setOnAction(e -> {
+            // Afficher une boîte de dialogue de confirmation
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setTitle("Confirmation");
+            confirmation.setHeaderText("Êtes-vous sûr de vouloir quitter la partie ?");
+            confirmation.setContentText("Cliquez sur Oui pour quitter ou sur Non pour rester dans la partie.");
     
-        // Main layout
-        VBox layout = new VBox(10, new Label("Challenge 1"), toggleCriteresButton, criteresLayout, boutonRetour);
+            ButtonType buttonOui = new ButtonType("Oui");
+            ButtonType buttonNon = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
+            confirmation.getButtonTypes().setAll(buttonOui, buttonNon);
+    
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if (result.isPresent() && result.get() == buttonOui) {
+                // Réinitialiser les interactions de l'administrateur
+                admin.resetInteractions();
+    
+                // Retourner au menu principal
+                afficherMenuPrincipal(administrateurs);
+            }
+        });
+    
+        // Layout principal pour la page
+        VBox layout = new VBox(10, new Label("Challenge 1"), outputArea, toggleCriteresButton, criteresLayout, boutonRetour);
         layout.setPadding(new javafx.geometry.Insets(10));
     
-        // Create and set the scene
+        // Créer et appliquer la scène
         Scene scene = new Scene(layout, 400, 300);
         stage.setScene(scene);
     }
@@ -174,7 +189,7 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
         boutonRetour.setOnAction(e -> afficherMenuPrincipal(administrateurs));
     
         // Main layout
-        VBox layout = new VBox(10, new Label("Challenge 2"), toggleCriteresButton, criteresLayout, boutonRetour);
+        VBox layout = new VBox(10, new Label("Challenge 2"), outputArea, toggleCriteresButton, criteresLayout, boutonRetour);
         layout.setPadding(new javafx.geometry.Insets(10));
     
         // Create and set the scene
@@ -219,7 +234,7 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
         boutonRetour.setOnAction(e -> afficherMenuPrincipal(administrateurs));
     
         // Main layout
-        VBox layout = new VBox(10, new Label("Challenge 3"), toggleCriteresButton, criteresLayout, boutonRetour);
+        VBox layout = new VBox(10, new Label("Challenge 3"), outputArea, toggleCriteresButton, criteresLayout, boutonRetour);
         layout.setPadding(new javafx.geometry.Insets(10));
     
         // Create and set the scene
