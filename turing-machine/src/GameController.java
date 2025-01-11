@@ -77,9 +77,8 @@ public class GameController {
     
         // Interactions avec le joueur
         Scanner scanner = new Scanner(System.in);
-        while (admin.peutInteragir()) {
-            System.out.println("\nInteractions restantes : " + admin.getInteractions());
-            System.out.println("Proposez un CodeSalle (campus, bâtiment, étage, numéro) :");
+        while (true) {  // Les tours sont illimités tant que le joueur n'a pas soumis son code
+            System.out.println("\nProposez un CodeSalle (campus, bâtiment, étage, numéro) :");
     
             System.out.print("Campus (caractère) : ");
             char campus = scanner.next().charAt(0);
@@ -110,7 +109,7 @@ public class GameController {
                 System.out.println("Critère vérifié : " + critere1.getDescription() + " -> " + (resultat1 ? "Validé" : "Non validé"));
                 if (!resultat1) tousVerifies = false;
             }
-            
+    
             if (choix2 >= 1 && choix2 <= currentChallenge.getListeCriteres().size()) {
                 Critere critere2 = currentChallenge.getListeCriteres().get(choix2 - 1);
                 boolean resultat2 = currentChallenge.verifierCritere(critere2, proposition);
@@ -125,22 +124,20 @@ public class GameController {
                 // Comparaison complète des deux codes
                 if (comparerCodes(currentChallenge.getSolution(), proposition)) {
                     System.out.println("\nFélicitations ! Votre proposition est correcte. Vous avez trouvé la solution.");
-                    return;
+                    return; // Fin du challenge si la proposition est correcte
                 } else {
-                    System.out.println("\nDésolé, votre proposition n'est pas correcte. Essayez encore.");
+                    System.out.println("\nDésolé, votre proposition n'est pas correcte.");
+                    return; // Fin du challenge si la proposition est incorrecte
                 }
             } else if (choix == 'F' || choix == 'f') {
-                admin.decremInteractions();
-                if (admin.peutInteragir()) {
-                    System.out.println("\nEssayez encore !\n");
-                } else {
-                    System.out.println("\nVous n'avez plus d'interactions restantes. Challenge échoué.\n");
-                }
+                // Si l'utilisateur ne veut pas soumettre, il peut recommencer
+                System.out.println("\nVous pouvez continuer à proposer un autre code.");
             } else {
                 System.out.println("\nChoix non valide. Essayez de nouveau.");
             }
         }
     }
+    
     
     
     
