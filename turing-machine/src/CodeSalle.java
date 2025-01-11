@@ -12,6 +12,8 @@ public class CodeSalle {
         this.numero = numero;
     }
 
+    public CodeSalle(){}
+
     public char getCampus() {
         return campus;
     }
@@ -28,8 +30,4 @@ public class CodeSalle {
         return numero;
     }
 
-    public boolean comparer(CodeSalle c) {
-        // Implémentez la comparaison ici si nécessaire
-        return false;
-    }
 }

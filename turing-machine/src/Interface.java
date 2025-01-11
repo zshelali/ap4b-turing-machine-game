@@ -13,17 +13,16 @@ public class Interface extends Application {
 
     private TextArea outputArea;
     private Stage stage;
+    private Challenge currChallenge;
 
     @Override
     public void start(Stage primaryStage) {
     stage = primaryStage;
-    primaryStage.setTitle("UTuring BMachine game (UTBM)");
+    primaryStage.setTitle("U-Turing B-Machine game (U-T B-M)");
     
     List<Administrateur> administrateurs = creerAdministrateursAvecDialogue();
 
     afficherMenuPrincipal(administrateurs);
-
-    //afficherMenuPrincipal();
 
     primaryStage.show();
 }
@@ -97,33 +96,38 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
             return;
         }
         Administrateur admin = administrateurs.get(0);
+        
+
+        
 
         VBox criteresLayout = new VBox(10);
         criteresLayout.setVisible(false);
 
         switch (challengeID){
             case 1:
-                Challenge.creerChallenge1();
+                currChallenge = Challenge.creerChallenge1();
                 break;
             case 2:
-                Challenge.creerChallenge2();
+                currChallenge = Challenge.creerChallenge2();
                 break;
             case 3:
-                Challenge.creerChallenge3();
+                currChallenge = Challenge.creerChallenge3();
+                break;
             default :
                 System.out.println("HELP");
-            break;
         }
 
-       
+        GameController gameController = new GameController();
+        CodeSalle solution = new CodeSalle();
+        
     
         // Label pour afficher les interactions restantes
         Label interactionsLabel = new Label("Interactions restantes : " + admin.getInteractions());
     
         // Création des menus déroulants pour le choix de CodeSalle
         Label campusLabel = new Label("Campus:");
-        ComboBox<String> campusComboBox = new ComboBox<>();
-        campusComboBox.getItems().addAll("B", "S", "M");
+        ComboBox<Character> campusComboBox = new ComboBox<>();
+        campusComboBox.getItems().addAll('B', 'S', 'M');
     
         Label batimentLabel = new Label("Bâtiment:");
         ComboBox<Character> batimentComboBox = new ComboBox<>();
@@ -163,14 +167,15 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
             etageComboBox.getValue() != null &&
             numeroComboBox.getValue() != null) {
 
+                CodeSalle reponseAdmin = new CodeSalle(campusComboBox.getValue(), batimentComboBox.getValue(), etageComboBox.getValue(), numeroComboBox.getValue());
+
                 boolean critereValide = false;
-                if(critereValide){
+                if(GameController.comparerCodes(reponseAdmin, currChallenge.getSolution()) == true){
                     //CHANGER URGENT MODIFIER
-                     resultLabel.setText("critere valide (a modifier)");
+                     resultLabel.setText("VICTOIRE");
                 }
                 else {
-                    
-                    resultLabel.setText("critere non valide (a modifier)");;
+                    resultLabel.setText("Dommage, le code est faux");;
                 }
             
             }

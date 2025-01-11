@@ -7,51 +7,53 @@ public class GameController {
     private List<Challenge> challenges;
     private Challenge currentChallenge;
     private List<Administrateur> administrateurs;
+
+    public GameController(){}
     
-    public GameController(List<Challenge> challenges) {
-        this.challenges = challenges;
-        this.administrateurs = creerAdministrateurs();
+    public GameController(Challenge challenges) {
+        this.currentChallenge = challenges;
+        // this.administrateurs = creerAdministrateurs();
     }
 
-    public static void main(String[] args) {
-        // Création des challenges
-        List<Challenge> challenges = new ArrayList<>();
-        challenges.add(Challenge.creerChallenge1());
-        challenges.add(Challenge.creerChallenge2());
-        challenges.add(Challenge.creerChallenge3());
+    // public static void main(String[] args) {
+    //     // Création des challenges
+    //     List<Challenge> challenges = new ArrayList<>();
+    //     challenges.add(Challenge.creerChallenge1());
+    //     challenges.add(Challenge.creerChallenge2());
+    //     challenges.add(Challenge.creerChallenge3());
 
-        // Lancement du jeu
-        GameController game = new GameController(challenges);
-        game.jouer();
-    }
+    //     // Lancement du jeu
+    //     GameController game = new GameController(challenges);
+    //     game.jouer();
+    // }
 
-    public void jouer() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Bienvenue dans le jeu des Challenges !\n");
+    // public void jouer() {
+    //     Scanner scanner = new Scanner(System.in);
+    //     System.out.println("Bienvenue dans le jeu des Challenges !\n");
 
-        while (true) {
-            System.out.println("Menu Principal");
-            System.out.println("1. Jouer au Challenge 1");
-            System.out.println("2. Jouer au Challenge 2");
-            System.out.println("3. Jouer au Challenge 3");
-            System.out.println("4. Quitter");
+    //     while (true) {
+    //         System.out.println("Menu Principal");
+    //         System.out.println("1. Jouer au Challenge 1");
+    //         System.out.println("2. Jouer au Challenge 2");
+    //         System.out.println("3. Jouer au Challenge 3");
+    //         System.out.println("4. Quitter");
 
-            System.out.print("Votre choix : ");
-            int choix = scanner.nextInt();
+    //         System.out.print("Votre choix : ");
+    //         int choix = scanner.nextInt();
 
-            switch (choix) {
-                case 1 -> jouerChallenge(0);
-                case 2 -> jouerChallenge(1);
-                case 3 -> jouerChallenge(2);
-                case 4 -> {
-                    System.out.println("Merci d'avoir joué ! À bientôt.");
-                    return;
-                }
-                default -> System.out.println("Choix invalide. Veuillez réessayer.\n");
-            }
-        }
-    }
-    private boolean comparerCodes(CodeSalle solution, CodeSalle proposition) {
+    //         switch (choix) {
+    //             case 1 -> jouerChallenge(0);
+    //             case 2 -> jouerChallenge(1);
+    //             case 3 -> jouerChallenge(2);
+    //             case 4 -> {
+    //                 System.out.println("Merci d'avoir joué ! À bientôt.");
+    //                 return;
+    //             }
+    //             default -> System.out.println("Choix invalide. Veuillez réessayer.\n");
+    //         }
+    //     }
+    // }
+    public static boolean comparerCodes(CodeSalle solution, CodeSalle proposition) {
         // Comparaison des quatre éléments du code (campus, bâtiment, étage, numéro de salle)
         return solution.getCampus() == proposition.getCampus() &&
                solution.getBatiment() == proposition.getBatiment() &&
@@ -144,11 +146,11 @@ public class GameController {
     
     
 
-    private List<Administrateur> creerAdministrateurs() {
-        List<Administrateur> administrateurs = new ArrayList<>();
-        administrateurs.add(new Administrateur(1));
-        System.out.println("Administrateur créé avec 3 interactions par défaut.");
-        return administrateurs;
-    }
+    // private List<Administrateur> creerAdministrateurs() {
+    //     List<Administrateur> administrateurs = new ArrayList<>();
+    //     administrateurs.add(new Administrateur(1));
+    //     System.out.println("Administrateur créé avec 3 interactions par défaut.");
+    //     return administrateurs;
+    // }
     
 }
