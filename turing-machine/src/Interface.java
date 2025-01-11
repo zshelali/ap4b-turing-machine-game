@@ -138,27 +138,24 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
         // Finaliser la validation lorsque tout est sélectionné
         Button validateButton = new Button("Valider");
         validateButton.setOnAction(e -> {
+            /* VERIFIER CRITERE */
             if (campusComboBox.getValue() != null &&
-                batimentComboBox.getValue() != null &&
-                etageComboBox.getValue() != null &&
-                numeroComboBox.getValue() != null) {
-    
-                if (admin.peutInteragir()) {
-                    // Réduire les interactions de l'administrateur
-                    admin.decremInteractions();
-                    interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
-    
-                    // Afficher le résultat final
-                    resultLabel.setText("Code sélectionné : " + campusComboBox.getValue() + "-" +
-                                        batimentComboBox.getValue() + "-" +
-                                        etageComboBox.getValue() + "-" +
-                                        numeroComboBox.getValue());
-                } else {
-                    resultLabel.setText("Aucune interaction restante pour cet administrateur !");
+            batimentComboBox.getValue() != null &&
+            etageComboBox.getValue() != null &&
+            numeroComboBox.getValue() != null) {
+                boolean critereValide = false;
+            
+                if(critereValide){
+                    //CHANGER URGENT MODIFIER
+                     resultLabel.setText("critere valide (a modifier)");
                 }
-            } else {
-                resultLabel.setText("Veuillez sélectionner toutes les options.");
+                else {
+                    
+                    resultLabel.setText("critere non valide (a modifier)");;
+                }
+            
             }
+
         });
     
         // Bouton pour revenir au menu principal avec confirmation
