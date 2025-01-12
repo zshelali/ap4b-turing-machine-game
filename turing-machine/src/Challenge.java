@@ -22,7 +22,7 @@ public class Challenge {
 
     // Vérifie un critère spécifique pour une proposition donnée
     public boolean verifierCritere(Critere critere, CodeSalle proposition) {
-        return critere.verifier(proposition, solution);
+        return critere.verifier(proposition, this.getSolution());
     }
 
     public static Challenge creerChallenge1() {

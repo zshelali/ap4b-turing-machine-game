@@ -15,6 +15,14 @@ public class Interface extends Application {
     private Stage stage;
     private Challenge currChallenge;
 
+    private boolean verifcrit0 = false;
+    private boolean verifcrit1 = false;
+    private boolean verifcrit2 = false;
+    private boolean verifcrit3 = false;
+    private CodeSalle reponseAdmin;
+
+    private int compteurTours;
+
     @Override
     public void start(Stage primaryStage) {
     stage = primaryStage;
@@ -92,16 +100,13 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
     /*
      * chaque page est un challenge.
      */
-    private void afficherPage(List<Administrateur> administrateurs, int challengeID) {
+private void afficherPage(List<Administrateur> administrateurs, int challengeID) {
         // Vérifier qu'il y a au moins un administrateur
         if (administrateurs.isEmpty()) {
             afficherMessage("Aucun administrateur disponible !");
             return;
         }
         Administrateur admin = administrateurs.get(0);
-        
-
-        
 
         VBox criteresLayout = new VBox(10);
         criteresLayout.setVisible(false);
@@ -119,11 +124,26 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
             default :
                 System.out.println("HELP");
         }
-
-        
     
+        Critere critere0 = currChallenge.getListeCriteres().get(0);
+        Critere critere1 = currChallenge.getListeCriteres().get(1);
+        Critere critere2 = currChallenge.getListeCriteres().get(2);
+        Critere critere3 = currChallenge.getListeCriteres().get(3);
+
+        Label critere0Affichage = new Label("1");
+        Label critere1Affichage = new Label("2");
+        Label critere2Affichage = new Label("3");
+        Label critere3Affichage = new Label("4");
+
+        critere0Affichage.setText(critere0.getDescription());
+        critere1Affichage.setText(critere1.getDescription());
+        critere2Affichage.setText(critere2.getDescription());
+        critere3Affichage.setText(critere3.getDescription());
+
+
         // Label pour afficher les interactions restantes
         Label interactionsLabel = new Label("Interactions restantes : " + admin.getInteractions());
+        Label compteurToursLabel = new Label("Nombre de tours : " + compteurTours);
     
         // Création des menus déroulants pour le choix de CodeSalle
         Label campusLabel = new Label("Campus:");
@@ -143,7 +163,6 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
         numeroComboBox.getItems().addAll(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
         //Affichage des cartes critère 
-        
     
         // Bouton pour valider le choix
         Label resultLabel = new Label(); // Label pour afficher le résultat
@@ -161,67 +180,101 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
         numeroComboBox.setOnAction(e -> {
             resultLabel.setText("Numéro sélectionné : " + numeroComboBox.getValue());
         });
-    
+
+        
+
         // Finaliser la validation lorsque tout est sélectionné
         Button nextTurnButton = new Button("Tour suivant");
         nextTurnButton.setOnAction(e -> {
             admin.resetInteractions();
+            interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+            resultLabel.setText("");
+            compteurTours++;
+            compteurToursLabel.setText("Nombre de tours : " + compteurTours);
+
         });
-        Button validateButton = new Button("Valider");
+        Button validateButton = new Button("Confirmer code");
         validateButton.setOnAction(e -> {
-            /* VERIFIER CRITERE */
+            /* COMPARER CODE ADMIN AVEC SOLUTION */
             if (campusComboBox.getValue() != null &&
             batimentComboBox.getValue() != null &&
             etageComboBox.getValue() != null &&
             numeroComboBox.getValue() != null) {
-
-                CodeSalle reponseAdmin = new CodeSalle(campusComboBox.getValue(), batimentComboBox.getValue(), etageComboBox.getValue(), numeroComboBox.getValue());
-
-                if (GameController.comparerCodes(reponseAdmin, currChallenge.getSolution())) {
-                    // CHANGER URGENT MODIFIER
-                    resultLabel.setText("VICTOIRE");
-                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-                    confirmation.setTitle("Victoire");
-                    confirmation.setHeaderText("Bravo ! Vous avez gagné");
-                    confirmation.setContentText("Cliquez sur OK pour retourner au menu principal");
+                resultLabel.setText("Confirmer ?");
+                    Alert surete = new Alert(Alert.AlertType.CONFIRMATION);
+                    surete.setTitle("Confirmer ?");
+                    surete.setHeaderText("Êtes-vous sûr de vouloir confirmer ?");
+                    surete.setContentText("Si votre code est faux vous aurez perdu !");
                 
-                    ButtonType buttonOK = new ButtonType("OK");
-                    confirmation.getButtonTypes().setAll(buttonOK);
+                    ButtonType buttonSur = new ButtonType("OK");
+                    ButtonType buttonPasSur = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                    surete.getButtonTypes().setAll(buttonSur, buttonPasSur);
                 
                     // Affichez l'alerte
-                    Optional<ButtonType> result = confirmation.showAndWait();
-                    if (result.isPresent() && result.get() == buttonOK) {
+                    reponseAdmin = new CodeSalle(campusComboBox.getValue(), batimentComboBox.getValue(), etageComboBox.getValue(), numeroComboBox.getValue());
+
+                    Optional<ButtonType> result2 = surete.showAndWait();
+                    if (result2.isPresent() && result2.get() == buttonSur) {
+
                         // Réinitialiser les interactions et retourner au menu principal
                         admin.resetInteractions();
                         interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+                        resultLabel.setText("");
+                        if (GameController.comparerCodes(reponseAdmin, currChallenge.getSolution())) {
+                            // CHANGER URGENT MODIFIER
+                            resultLabel.setText("VICTOIRE");
+                            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                            confirmation.setTitle("Victoire");
+                            confirmation.setHeaderText("Bravo ! Vous avez gagné avec "+ compteurTours + " tours !");
+                            confirmation.setContentText("Cliquez sur OK pour retourner au menu principal");
+                        
+                            ButtonType buttonOK = new ButtonType("OK");
+                            confirmation.getButtonTypes().setAll(buttonOK);
+                        
+                            // Affichez l'alerte
+                            Optional<ButtonType> result = confirmation.showAndWait();
+                            if (result.isPresent() && result.get() == buttonOK) {
+                                // Réinitialiser les interactions et retourner au menu principal
+                                admin.resetInteractions();
+                                interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+                                resultLabel.setText("");
+                                compteurTours = 0;
+                                compteurToursLabel.setText("Nombre de tours : " + compteurTours);
+                                afficherMenuPrincipal(administrateurs);
+                            }
+                        }
+                        else {
+                            resultLabel.setText("Dommage, le code est faux");
+                            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                            confirmation.setTitle("Défaite");
+                            confirmation.setHeaderText("Vous avez perdu");
+                            confirmation.setContentText("Cliquez sur OK pour retourner au menu principal");
+            
+                            ButtonType buttonOK = new ButtonType("OK");
+                            confirmation.getButtonTypes().setAll(buttonOK);
+            
+                            Optional<ButtonType> result = confirmation.showAndWait();
+                            if (result.isPresent() && result.get() == buttonOK) {
+                                // Réinitialiser les interactions de l'administrateur
+                                admin.resetInteractions();
+                                interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+                                resultLabel.setText("");
+                                compteurTours = 0;
+                                compteurToursLabel.setText("Nombre de tours : " + compteurTours);
+                    
+                                // Retourner au menu principal
+                                afficherMenuPrincipal(administrateurs);
+                            }
+                        }
                         afficherMenuPrincipal(administrateurs);
                     }
-                }
-                else {
-                    resultLabel.setText("Dommage, le code est faux");
-                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-                    confirmation.setTitle("Défaite");
-                    confirmation.setHeaderText("Vous avez perdu");
-                    confirmation.setContentText("Cliquez sur OK pour retourner au menu principal");
-    
-                    ButtonType buttonOK = new ButtonType("OK");
-                    confirmation.getButtonTypes().setAll(buttonOK);
-    
-            Optional<ButtonType> result = confirmation.showAndWait();
-            if (result.isPresent() && result.get() == buttonOK) {
-                // Réinitialiser les interactions de l'administrateur
-                admin.resetInteractions();
-                interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
-    
-                // Retourner au menu principal
-                afficherMenuPrincipal(administrateurs);
-                }
-                }
-            
+                    else {
+                        System.out.println("Canceled");
+                    }  
             }
 
         });
-    
         // Bouton pour revenir au menu principal avec confirmation
         Button boutonRetour = new Button("Retour au Menu Principal");
         boutonRetour.setOnAction(e -> {
@@ -240,24 +293,112 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
                 // Réinitialiser les interactions de l'administrateur
                 admin.resetInteractions();
                 interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+                resultLabel.setText("");
     
                 // Retourner au menu principal
                 afficherMenuPrincipal(administrateurs);
             }
         });
-    
+
+        Button testcritere0Button = new Button("Tester critère 1");
+        testcritere0Button.setOnAction(e -> {
+            if (admin.getInteractions() >= 1 
+            && campusComboBox.getValue() != null &&
+            batimentComboBox.getValue() != null &&
+            etageComboBox.getValue() != null &&
+            numeroComboBox.getValue() != null) {
+                verifcrit0 = currChallenge.verifierCritere(critere0, reponseAdmin);
+                admin.decremInteractions();
+                interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+                resultLabel.setText(verifcrit0 ? "Verifié !" : "Ah ! c'est faux");           
+            }
+            else {
+                resultLabel.setText("Réponse vide \n ou plus d'intéractions possibles");
+            }
+        });
+        Button testcritere1Button = new Button("Tester critère 2");
+        testcritere1Button.setOnAction(e -> {
+            if (admin.getInteractions() >= 1 
+            && campusComboBox.getValue() != null &&
+            batimentComboBox.getValue() != null &&
+            etageComboBox.getValue() != null &&
+            numeroComboBox.getValue() != null) {
+                verifcrit1 = currChallenge.verifierCritere(critere1, reponseAdmin);
+                admin.decremInteractions();
+                interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+                resultLabel.setText(verifcrit1 ? "Verifié !" : "Ah ! c'est faux");           
+            }
+            else {
+                resultLabel.setText("Réponse vide \n ou plus d'intéractions possibles");
+            }
+        });
+        Button testcritere2Button = new Button("Tester critère 3");
+        testcritere2Button.setOnAction(e -> {
+            if (admin.getInteractions() >= 1 
+            && campusComboBox.getValue() != null &&
+            batimentComboBox.getValue() != null &&
+            etageComboBox.getValue() != null &&
+            numeroComboBox.getValue() != null) {
+                verifcrit2 = currChallenge.verifierCritere(critere2, reponseAdmin);
+                admin.decremInteractions();
+                interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+                resultLabel.setText(verifcrit2 ? "Verifié !" : "Ah ! c'est faux");   
+            }
+            else {
+                resultLabel.setText("Réponse vide \n ou plus d'intéractions possibles");
+            }
+        });
+        Button testcritere3Button = new Button("Tester critère 4");
+        testcritere3Button.setOnAction(e -> {
+            if (admin.getInteractions() >= 1 
+            && campusComboBox.getValue() != null &&
+            batimentComboBox.getValue() != null &&
+            etageComboBox.getValue() != null &&
+            numeroComboBox.getValue() != null) {
+                verifcrit3 = currChallenge.verifierCritere(critere3, reponseAdmin);
+                admin.decremInteractions();
+                interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+                resultLabel.setText(verifcrit3 ? "Verifié !" : "Ah ! c'est faux");   
+            }
+            else {
+                resultLabel.setText("Réponse vide \n ou plus d'intéractions possibles");
+            }
+        });
+
         // Organiser les éléments dans un layout
         VBox choicesLayout = new VBox(10, campusLabel, campusComboBox,
                                        batimentLabel, batimentComboBox,
                                        etageLabel, etageComboBox,
-                                       numeroLabel, numeroComboBox, validateButton, resultLabel, nextTurnButton);
+                                       numeroLabel, numeroComboBox, resultLabel, nextTurnButton, validateButton, boutonRetour);
+
+        VBox critereBox = new VBox(20,
+        critere0Affichage,
+        testcritere0Button,
+
+        critere1Affichage,
+        testcritere1Button,
+
+        critere2Affichage,
+        testcritere2Button,
+
+        critere3Affichage,
+        testcritere3Button
+        );
+
+        critereBox.setStyle("-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 1px;");
+        critereBox.setVisible(true);
     
-        VBox layout = new VBox(15, new Label("Challenge "+challengeID), interactionsLabel, choicesLayout, boutonRetour);
+        VBox layout = new VBox(15, new Label("Challenge "+challengeID), interactionsLabel, compteurToursLabel);
         layout.setStyle("-fx-padding: 20px; -fx-alignment: center;");
+
+        HBox mainLayout = new HBox(20, choicesLayout, critereBox, layout);
+        mainLayout.setStyle("-fx-padding: 20px;");
+        mainLayout.setPrefWidth(700);
     
         // Créer et appliquer la scène
-        Scene scene = new Scene(layout, 1024, 728);
+        Scene scene = new Scene(mainLayout, 1000, 500);
         stage.setScene(scene);
+
     }
     
     ///////////////////////////////////////////////////////////////////////
