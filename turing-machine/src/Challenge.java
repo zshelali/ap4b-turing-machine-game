@@ -53,7 +53,6 @@ public class Challenge {
     }
     
     public static Challenge creerChallenge3() {
-        // Challenge 3
         CodeSalle solution3 = new CodeSalle('S', 'D', 0, 2);
         List<Critere> criteres3 = List.of(
             new CritereParite("Le numéro de salle est pair | impair", false),
