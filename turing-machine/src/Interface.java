@@ -71,16 +71,19 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
     Button challengeButton1 = new Button("Challenge 1");
     Button challengeButton2 = new Button("Challenge 2");
     Button challengeButton3 = new Button("Challenge 3");
+    Button quitButton = new Button("Quitter le jeu");
 
     challengeButton1.setOnAction(e -> afficherPage(administrateurs, 1));
     challengeButton2.setOnAction(e -> afficherPage(administrateurs, 2));
     challengeButton3.setOnAction(e -> afficherPage(administrateurs, 3));
+    quitButton.setOnAction(e -> Platform.exit()); 
+
 
     outputArea = new TextArea();
     outputArea.setEditable(false);
     outputArea.setPrefHeight(100);
 
-    VBox layout = new VBox(10, new Label("Menu Principal"), challengeButton1, challengeButton2, challengeButton3, outputArea);
+    VBox layout = new VBox(10, new Label("Menu Principal"), challengeButton1, challengeButton2, challengeButton3, quitButton, outputArea);
     Scene scene = new Scene(layout, 400, 300);
 
     stage.setScene(scene); // Changer la scène
@@ -117,8 +120,6 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
                 System.out.println("HELP");
         }
 
-        GameController gameController = new GameController();
-        CodeSalle solution = new CodeSalle();
         
     
         // Label pour afficher les interactions restantes
@@ -140,6 +141,9 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
         Label numeroLabel = new Label("Numéro:");
         ComboBox<Integer> numeroComboBox = new ComboBox<>();
         numeroComboBox.getItems().addAll(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+        //Affichage des cartes critère 
+        
     
         // Bouton pour valider le choix
         Label resultLabel = new Label(); // Label pour afficher le résultat
@@ -159,6 +163,10 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
         });
     
         // Finaliser la validation lorsque tout est sélectionné
+        Button nextTurnButton = new Button("Tour suivant");
+        nextTurnButton.setOnAction(e -> {
+            admin.resetInteractions();
+        });
         Button validateButton = new Button("Valider");
         validateButton.setOnAction(e -> {
             /* VERIFIER CRITERE */
@@ -242,7 +250,7 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
         VBox choicesLayout = new VBox(10, campusLabel, campusComboBox,
                                        batimentLabel, batimentComboBox,
                                        etageLabel, etageComboBox,
-                                       numeroLabel, numeroComboBox, validateButton, resultLabel);
+                                       numeroLabel, numeroComboBox, validateButton, resultLabel, nextTurnButton);
     
         VBox layout = new VBox(15, new Label("Challenge "+challengeID), interactionsLabel, choicesLayout, boutonRetour);
         layout.setStyle("-fx-padding: 20px; -fx-alignment: center;");
