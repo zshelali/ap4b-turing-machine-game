@@ -6,8 +6,10 @@ public class Challenge {
     private CodeSalle solution;
     private List<Critere> listeCriteres;
 
-    public Challenge(){}
     public Challenge(CodeSalle solution, List<Critere> listeCriteres) {
+        if (solution == null) {
+            throw new IllegalArgumentException("La solution ne peut pas etre nulle");
+        }
         this.solution = solution;
         this.listeCriteres = listeCriteres;
     }
@@ -22,7 +24,7 @@ public class Challenge {
 
     // Vérifie un critère spécifique pour une proposition donnée
     public boolean verifierCritere(Critere critere, CodeSalle proposition) {
-        return critere.verifier(proposition, this.getSolution());
+        return critere.verifier(proposition, solution);
     }
 
     public static Challenge creerChallenge1() {

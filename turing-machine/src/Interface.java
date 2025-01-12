@@ -140,6 +140,7 @@ private void afficherPage(List<Administrateur> administrateurs, int challengeID)
         critere2Affichage.setText(critere2.getDescription());
         critere3Affichage.setText(critere3.getDescription());
 
+        System.out.println("DEBOG : " + currChallenge.getSolution().getSalle());
 
         // Label pour afficher les interactions restantes
         Label interactionsLabel = new Label("Interactions restantes : " + admin.getInteractions());
@@ -158,9 +159,9 @@ private void afficherPage(List<Administrateur> administrateurs, int challengeID)
         ComboBox<Integer> etageComboBox = new ComboBox<>();
         etageComboBox.getItems().addAll(0, 1, 2, 3, 4);
     
-        Label numeroLabel = new Label("Numéro:");
-        ComboBox<Integer> numeroComboBox = new ComboBox<>();
-        numeroComboBox.getItems().addAll(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+        Label salleLabel = new Label("Salle:");
+        ComboBox<Integer> salleComboBox = new ComboBox<>();
+        salleComboBox.getItems().addAll(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
         //Affichage des cartes critère 
     
@@ -177,8 +178,8 @@ private void afficherPage(List<Administrateur> administrateurs, int challengeID)
         etageComboBox.setOnAction(e -> {
             resultLabel.setText("Étage sélectionné : " + etageComboBox.getValue());
         });
-        numeroComboBox.setOnAction(e -> {
-            resultLabel.setText("Numéro sélectionné : " + numeroComboBox.getValue());
+        salleComboBox.setOnAction(e -> {
+            resultLabel.setText("Numéro sélectionné : " + salleComboBox.getValue());
         });
 
         
@@ -199,7 +200,7 @@ private void afficherPage(List<Administrateur> administrateurs, int challengeID)
             if (campusComboBox.getValue() != null &&
             batimentComboBox.getValue() != null &&
             etageComboBox.getValue() != null &&
-            numeroComboBox.getValue() != null) {
+            salleComboBox.getValue() != null) {
                 resultLabel.setText("Confirmer ?");
                     Alert surete = new Alert(Alert.AlertType.CONFIRMATION);
                     surete.setTitle("Confirmer ?");
@@ -212,7 +213,7 @@ private void afficherPage(List<Administrateur> administrateurs, int challengeID)
                     surete.getButtonTypes().setAll(buttonSur, buttonPasSur);
                 
                     // Affichez l'alerte
-                    reponseAdmin = new CodeSalle(campusComboBox.getValue(), batimentComboBox.getValue(), etageComboBox.getValue(), numeroComboBox.getValue());
+                    reponseAdmin = new CodeSalle(campusComboBox.getValue(), batimentComboBox.getValue(), etageComboBox.getValue(), salleComboBox.getValue());
 
                     Optional<ButtonType> result2 = surete.showAndWait();
                     if (result2.isPresent() && result2.get() == buttonSur) {
@@ -306,7 +307,7 @@ private void afficherPage(List<Administrateur> administrateurs, int challengeID)
             && campusComboBox.getValue() != null &&
             batimentComboBox.getValue() != null &&
             etageComboBox.getValue() != null &&
-            numeroComboBox.getValue() != null) {
+            salleComboBox.getValue() != null) {
                 verifcrit0 = currChallenge.verifierCritere(critere0, reponseAdmin);
                 admin.decremInteractions();
                 interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
@@ -322,7 +323,7 @@ private void afficherPage(List<Administrateur> administrateurs, int challengeID)
             && campusComboBox.getValue() != null &&
             batimentComboBox.getValue() != null &&
             etageComboBox.getValue() != null &&
-            numeroComboBox.getValue() != null) {
+            salleComboBox.getValue() != null) {
                 verifcrit1 = currChallenge.verifierCritere(critere1, reponseAdmin);
                 admin.decremInteractions();
                 interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
@@ -338,7 +339,9 @@ private void afficherPage(List<Administrateur> administrateurs, int challengeID)
             && campusComboBox.getValue() != null &&
             batimentComboBox.getValue() != null &&
             etageComboBox.getValue() != null &&
-            numeroComboBox.getValue() != null) {
+            salleComboBox.getValue() != null) {
+                System.out.println("DEBOG : " + currChallenge.getSolution().getSalle());
+
                 verifcrit2 = currChallenge.verifierCritere(critere2, reponseAdmin);
                 admin.decremInteractions();
                 interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
@@ -354,7 +357,9 @@ private void afficherPage(List<Administrateur> administrateurs, int challengeID)
             && campusComboBox.getValue() != null &&
             batimentComboBox.getValue() != null &&
             etageComboBox.getValue() != null &&
-            numeroComboBox.getValue() != null) {
+            salleComboBox.getValue() != null) {
+                System.out.println("DEBOG ETAGE SOLUTION 🤪: " + currChallenge.getSolution().getEtage());
+
                 verifcrit3 = currChallenge.verifierCritere(critere3, reponseAdmin);
                 admin.decremInteractions();
                 interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
@@ -365,11 +370,14 @@ private void afficherPage(List<Administrateur> administrateurs, int challengeID)
             }
         });
 
+        System.out.println("DEBOG : " + currChallenge.getSolution().getSalle());
+
+
         // Organiser les éléments dans un layout
         VBox choicesLayout = new VBox(10, campusLabel, campusComboBox,
                                        batimentLabel, batimentComboBox,
                                        etageLabel, etageComboBox,
-                                       numeroLabel, numeroComboBox, resultLabel, nextTurnButton, validateButton, boutonRetour);
+                                       salleLabel, salleComboBox, resultLabel, nextTurnButton, validateButton, boutonRetour);
 
         VBox critereBox = new VBox(20,
         critere0Affichage,
