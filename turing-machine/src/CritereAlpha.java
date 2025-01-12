@@ -1,6 +1,6 @@
 public class CritereAlpha extends Critere {
-    private char campusRef; // Référence de campus pour la comparaison
-    private char batimentRef; // Référence de bâtiment pour la comparaison
+    private char campusRef; 
+    private char batimentRef; 
 
     public CritereAlpha(String description) {
         super(description);
@@ -8,7 +8,6 @@ public class CritereAlpha extends Critere {
 
     @Override
     public boolean verifier(CodeSalle solution, CodeSalle proposition) {
-        // Vérifie si le bâtiment est avant/après le campus par ordre alphabétique
         return proposition.getBatiment() < solution.getCampus();
     }
     public CritereAlpha(char campusRef, char batimentRef) {
@@ -18,10 +17,10 @@ public class CritereAlpha extends Critere {
     
 
     public boolean verifCamp(CodeSalle codeSalle) {
-        return codeSalle.getCampus() > campusRef ; // Vérifie si le campus est après campusRef dans l'ordre alphabétique
+        return codeSalle.getCampus() > campusRef ;
     }
 
     public boolean verifBat(CodeSalle codeSalle) {
-        return codeSalle.getBatiment() > batimentRef; // Vérifie si le bâtiment est après batimentRef dans l'ordre alphabétique
+        return codeSalle.getBatiment() > batimentRef; 
     }
 }
