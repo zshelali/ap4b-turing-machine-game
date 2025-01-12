@@ -194,6 +194,8 @@ private void afficherPage(List<Administrateur> administrateurs, int challengeID)
             compteurToursLabel.setText("Nombre de tours : " + compteurTours);
 
         });
+
+
         Button validateButton = new Button("Confirmer code");
         validateButton.setOnAction(e -> {
             /* COMPARER CODE ADMIN AVEC SOLUTION */
