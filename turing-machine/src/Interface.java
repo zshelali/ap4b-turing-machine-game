@@ -169,10 +169,25 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
 
                 CodeSalle reponseAdmin = new CodeSalle(campusComboBox.getValue(), batimentComboBox.getValue(), etageComboBox.getValue(), numeroComboBox.getValue());
 
-                boolean critereValide = false;
-                if(GameController.comparerCodes(reponseAdmin, currChallenge.getSolution()) == true){
-                    //CHANGER URGENT MODIFIER
-                     resultLabel.setText("VICTOIRE");
+                if (GameController.comparerCodes(reponseAdmin, currChallenge.getSolution())) {
+                    // CHANGER URGENT MODIFIER
+                    resultLabel.setText("VICTOIRE");
+                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmation.setTitle("Victoire");
+                    confirmation.setHeaderText("Bravo ! Vous avez gagné");
+                    confirmation.setContentText("Cliquez sur OK pour retourner au menu principal");
+                
+                    ButtonType buttonOK = new ButtonType("OK");
+                    confirmation.getButtonTypes().setAll(buttonOK);
+                
+                    // Affichez l'alerte
+                    Optional<ButtonType> result = confirmation.showAndWait();
+                    if (result.isPresent() && result.get() == buttonOK) {
+                        // Réinitialiser les interactions et retourner au menu principal
+                        admin.resetInteractions();
+                        interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
+                        afficherMenuPrincipal(administrateurs);
+                    }
                 }
                 else {
                     resultLabel.setText("Dommage, le code est faux");
@@ -181,11 +196,11 @@ private void afficherMenuPrincipal(List<Administrateur> administrateurs) {
                     confirmation.setHeaderText("Vous avez perdu");
                     confirmation.setContentText("Cliquez sur OK pour retourner au menu principal");
     
-                    ButtonType buttonOui = new ButtonType("OK");
-                    confirmation.getButtonTypes().setAll(buttonOui);
+                    ButtonType buttonOK = new ButtonType("OK");
+                    confirmation.getButtonTypes().setAll(buttonOK);
     
             Optional<ButtonType> result = confirmation.showAndWait();
-            if (result.isPresent() && result.get() == buttonOui) {
+            if (result.isPresent() && result.get() == buttonOK) {
                 // Réinitialiser les interactions de l'administrateur
                 admin.resetInteractions();
                 interactionsLabel.setText("Interactions restantes : " + admin.getInteractions());
