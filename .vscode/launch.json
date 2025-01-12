@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Interface",
+            "request": "launch",
+            "mainClass": "Interface",
+            "projectName": "ap4b-turing-machine-game_3d3f1f08"
+        },
+        {
+            "type": "java",
             "name": "GameController",
             "request": "launch",
             "mainClass": "GameController",

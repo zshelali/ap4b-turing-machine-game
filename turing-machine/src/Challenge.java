@@ -22,16 +22,13 @@ public class Challenge {
         return listeCriteres;
     }
 
-    // Vérifie un critère spécifique pour une proposition donnée
+
     public boolean verifierCritere(Critere critere, CodeSalle proposition) {
         return critere.verifier(proposition, solution);
     }
 
     public static Challenge creerChallenge1() {
-        // Solution du challenge 1
         CodeSalle solution1 = new CodeSalle('B', 'C', 2, 5);
-        
-        // Définition des critères
         List<Critere> criteres1 = List.of(
             new CritereAlpha("Le bâtiment est avant | après le campus par ordre alphabétique"),
             new CritereParite("L'étage est pair | impair", true),
@@ -39,13 +36,11 @@ public class Challenge {
             new CriterePresenceChiffre("Le nombre d'occurrences du chiffre 4 est identique", '4') 
         );
         
-        // Création du challenge
         Challenge challenge1 = new Challenge(solution1, criteres1);
         return challenge1;
     }
     
     public static Challenge creerChallenge2() {
-        // Challenge 2
         CodeSalle solution2 = new CodeSalle('M', 'A', 3, 7);
         List<Critere> criteres2 = List.of(
             new CritereAlpha("Le bâtiment est avant | après le campus par ordre alphabétique"),
