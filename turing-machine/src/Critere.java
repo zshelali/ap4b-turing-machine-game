@@ -1,7 +1,19 @@
-public class Critere {
+public abstract class Critere {
 
-	private String description;
+    protected String description;
 
-	private Carte carte;
+    public Critere(){
+        this.description = " ";
+    }
 
+    public Critere(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    // Méthode abstraite pour vérifier un critère
+    public abstract boolean verifier(CodeSalle proposition, CodeSalle solution);
 }

@@ -1,0 +1,13 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/Users/zshelali/Documents/Developer/javafx-sdk-23.0.1/lib/javafx-swt.jar",
+        "/Users/zshelali/Documents/Developer/javafx-sdk-23.0.1/lib/javafx.base.jar",
+        "/Users/zshelali/Documents/Developer/javafx-sdk-23.0.1/lib/javafx.controls.jar",
+        "/Users/zshelali/Documents/Developer/javafx-sdk-23.0.1/lib/javafx.fxml.jar",
+        "/Users/zshelali/Documents/Developer/javafx-sdk-23.0.1/lib/javafx.graphics.jar",
+        "/Users/zshelali/Documents/Developer/javafx-sdk-23.0.1/lib/javafx.media.jar",
+        "/Users/zshelali/Documents/Developer/javafx-sdk-23.0.1/lib/javafx.swing.jar",
+        "/Users/zshelali/Documents/Developer/javafx-sdk-23.0.1/lib/javafx.web.jar"
+    ]
+}

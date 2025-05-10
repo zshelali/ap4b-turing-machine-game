@@ -1,15 +1,33 @@
 public class CodeSalle {
 
-	private char campus;
+    private char campus;
+    private char batiment;
+    private int etage;
+    private int numero;
 
-	private char batiment;
+    public CodeSalle(char campus, char batiment, int etage, int numero) {
+        this.campus = campus;
+        this.batiment = batiment;
+        this.etage = etage;
+        this.numero = numero;
+    }
 
-	private int etage;
+    public CodeSalle(){}
 
-	private int numero;
+    public char getCampus() {
+        return campus;
+    }
 
-	public boolean comparer(CodeSalle c) {
-		return false;
-	}
+    public char getBatiment() {
+        return batiment;
+    }
+
+    public int getEtage() {
+        return etage;
+    }
+
+    public int getSalle() {
+        return numero;
+    }
 
 }

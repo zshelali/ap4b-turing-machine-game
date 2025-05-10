@@ -1,11 +1,41 @@
 public class Administrateur {
-    private int nInteraction;
 
+    private int interactions;
     private CodeSalle proposition;
+    private int identifiant; 
 
-    private Interface interface;
+    public Administrateur(int identifiant) {
+        this.identifiant = identifiant;
+        this.interactions = 2; 
+    }
+
+    public int getIdentifiant() {
+        return identifiant;
+    }
 
     public int getInteractions() {
-        return 0;
+        return interactions;
+    }
+
+    public void resetInteractions() {
+        this.interactions = 2;
+    }
+
+    public void decremInteractions() {
+        if (interactions > 0) {
+            this.interactions--;
+        }
+    }
+
+    public boolean peutInteragir() {
+        return interactions > 0;
+    }
+
+    public CodeSalle getProposition() {
+        return proposition;
+    }
+
+    public void setProposition(CodeSalle proposition) {
+        this.proposition = proposition;
     }
 }
